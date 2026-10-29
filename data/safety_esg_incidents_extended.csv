@@ -1,0 +1,49 @@
+incident_id,narrative,target_category,target_severity
+X001,Technician received electric shock from damaged extension cord during inverter maintenance and was taken to hospital,safety,high
+X002,Worker fell from ladder while cleaning tracker and fractured wrist,safety,high
+X003,Near miss: unsecured solar panel slid from stack during unloading,safety,high
+X004,Contractor not wearing helmet inside substation yard and was given a verbal warning,safety,low
+X005,Minor cut on hand while handling module frame and first aid given on site,safety,low
+X006,Forklift reversed close to pedestrian at stores without banksman,safety,high
+X007,Missing guardrail near transformer pit identified during inspection,safety,medium
+X008,Lockout tagout not applied before breaker maintenance and work was stopped,safety,high
+X009,Worker complained of heat exhaustion during afternoon cleaning shift and recovered after rest,safety,medium
+X010,Loose cable lying across walkway at control room and tripping hazard was removed,safety,low
+X011,Fire in battery container with smoke detected and evacuation done and fire team called,safety,high
+X012,Harness not anchored during turbine blade inspection at height and supervisor stopped the job,safety,high
+X013,Contractor slipped on muddy access road with no injury,safety,low
+X014,Unauthorised person entered live switchyard area through open gate,safety,high
+X015,First aid box found empty during weekly inspection at site office,safety,low
+X016,Crane lifting without tag line and load swung near workers with no injury,safety,medium
+X017,Transformer oil leak near substation with soil contaminated and spill kit used and area cordoned,environment,high
+X018,Diesel spill during generator refuelling contained within bund,environment,medium
+X019,Water tanker overflow during module cleaning wasted water and valve was closed,environment,low
+X020,Excess dust from access road construction near village,environment,medium
+X021,Bird collision found near wind turbine at dawn and carcass reported,environment,medium
+X022,Gearbox oil dripping onto nacelle platform and absorbent pads applied,environment,medium
+X023,Effluent from site septic tank overflowing near drainage channel,environment,high
+X024,Used oil drums stored without secondary containment near workshop,environment,medium
+X025,Borewell water consumption exceeded monthly limit due to cleaning schedule,environment,low
+X026,Battery electrolyte leakage in storage container and hazmat team contained spill and soil sample taken,environment,high
+X027,Noise complaint from nearby village due to night turbine maintenance,environment,low
+X028,Minor hydraulic oil drip from tracker drive and wiped immediately,environment,low
+X029,Vegetation clearing carried out beyond approved boundary affecting grazing land,environment,high
+X030,Rainwater runoff carrying silt into stream from excavation area,environment,medium
+X031,SF6 gas leak alarm triggered at switchgear room and area ventilated,environment,high
+X032,Cleaning chemical container left open near drainage,environment,low
+X033,Waste segregation deviation repeated at contractor camp with mixed waste bins observed,esg_compliance,low
+X034,Hazardous waste manifest missing for used battery disposal,esg_compliance,high
+X035,Contractor workers lacked valid safety induction records during audit,esg_compliance,medium
+X036,Overtime wages not paid on time to contract labourers and grievance raised,esg_compliance,high
+X037,Environmental clearance conditions report submission delayed by two weeks,esg_compliance,medium
+X038,Waste contractor license expired but pick-up continued,esg_compliance,high
+X039,Grievance register not updated for community complaints,esg_compliance,low
+X040,Fire extinguisher inspection certificates overdue at three locations,esg_compliance,medium
+X041,Incomplete training records for night shift operators found during internal audit,esg_compliance,low
+X042,Underage worker suspected at contractor labour camp and age proof not verified,esg_compliance,high
+X043,Missing consent documentation for land lease amendment,esg_compliance,medium
+X044,Emission monitoring data not logged for two days,esg_compliance,medium
+X045,Contractor register of workers not maintained at site gate,esg_compliance,low
+X046,Recycling records for e-waste not submitted to compliance team,esg_compliance,low
+X047,CSR spend report for village program not reconciled with ledger,esg_compliance,low
+X048,Statutory display boards and permits not visible at project entrance,esg_compliance,low

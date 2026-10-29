@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ESG / Safety Incident Intelligence Dashboard</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#172033;--mut:#5b6678;--bd:#e3e7ee;--g:#12372a;--low:#2f9e6b;--medium:#e0a526;--high:#d64545}
+@media(prefers-color-scheme:dark){:root{--bg:#10151c;--card:#1a212b;--ink:#e6eaf0;--mut:#9aa6b6;--bd:#2c3644}}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:var(--g);color:#fff;padding:22px 28px}h1{margin:0;font-size:22px}header p{margin:4px 0 0;opacity:.85;font-size:14px}
+main{max-width:1100px;margin:0 auto;padding:18px;display:grid;gap:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;overflow-x:auto}h2{margin:0 0 12px;font-size:16px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}.kpi b{display:block;font-size:26px}.kpi span{color:var(--mut);font-size:12px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.bar{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px}.bar i{display:block;height:14px;border-radius:4px;background:var(--g)}.bar em{min-width:110px;font-style:normal}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;color:#fff}.low{background:var(--low)}.medium{background:var(--medium)}.high{background:var(--high)}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--mut);font-weight:600}
+textarea{width:100%;min-height:70px;padding:10px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--ink);font:inherit}
+button{background:var(--g);color:#fff;border:0;border-radius:8px;padding:8px 13px;cursor:pointer;margin:6px 6px 0 0}button.alt{background:transparent;color:var(--ink);border:1px solid var(--bd)}
+small,.mut{color:var(--mut)}ul{margin:6px 0;padding-left:18px}
+</style></head><body>
+<header><h1>ESG / Safety Incident Intelligence Dashboard</h1><p>Classifies incident type and severity, extracts recurring patterns, and recommends preventive actions from free-text narratives.</p></header>
+<main>
+<section class="card"><h2>Analyse an incident</h2>
+<textarea id="t" placeholder="Describe an incident...">Contractor worker not wearing harness while cleaning trackers at height; supervisor stopped the job</textarea>
+<button onclick="run()">Analyse</button>
+<button class="alt" onclick="ex('Hydraulic oil leaking from turbine nacelle onto platform, absorbent pads applied')">Example: oil leak</button>
+<button class="alt" onclick="ex('Hazardous waste manifest missing for used battery disposal during audit')">Example: compliance</button>
+<label class="mut" style="margin-left:8px;font-size:13px">or CSV (needs a narrative column): <input type="file" id="f" accept=".csv" onchange="up(this)"></label>
+<div id="res" style="margin-top:14px"></div></section>
+<section class="kpis" id="kpis"></section>
+<div class="row"><section class="card"><h2>Incidents by category</h2><div id="cat"></div></section><section class="card"><h2>Incidents by severity</h2><div id="sev"></div></section></div>
+<section class="card"><h2>Recurring patterns &amp; preventive actions</h2><div id="pat"></div></section>
+<section class="card"><h2>Highest-risk incidents</h2><div id="top"></div></section>
+<section class="card"><h2>Model evaluation (cross-validated)</h2><div id="ev"></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pill=s=>`<span class="pill ${s}">${s}</span>`,nm=s=>s.replace('_',' ');
+const bars=(o,t)=>Object.entries(o).map(([k,v])=>`<div class="bar"><em>${nm(k)}</em><i style="width:${Math.max(4,v/Math.max(t,1)*100*.6)}%"></i>${v}</div>`).join('');
+function dash(d){const k=d.kpis;$('kpis').innerHTML=[['Incidents',k.total],['High severity',k.high_severity+' ('+k.high_pct+'%)'],['Avg risk score',k.avg_risk],['Recurring patterns',k.recurring_patterns]].map(([a,b])=>`<div class="card kpi"><b>${b}</b><span>${a}</span></div>`).join('');
+$('cat').innerHTML=bars(d.by_category,k.total);$('sev').innerHTML=bars(d.by_severity,k.total);
+$('pat').innerHTML='<table><tr><th>Pattern</th><th>Count</th><th>High</th><th>Recurring?</th><th>Recommended actions</th></tr>'+d.patterns.map(p=>`<tr><td>${esc(p.label)}</td><td>${p.count} (${p.share_pct}%)</td><td>${p.high}</td><td>${p.recurring?'Yes':'-'}</td><td><ul>${p.actions.map(a=>'<li>'+esc(a)+'</li>').join('')}</ul></td></tr>`).join('')+'</table>';
+$('top').innerHTML='<table><tr><th>ID</th><th>Summary</th><th>Severity</th><th>Risk</th></tr>'+d.top_risks.map(r=>`<tr><td>${esc(r.incident_id||'')}</td><td>${esc(r.summary)}<br><small>${esc(r.narrative)}</small></td><td>${pill(r.severity)}</td><td>${r.risk_score}</td></tr>`).join('')+'</table>'}
+function show(r){$('res').innerHTML=`<p>${pill(r.severity)} <b>${nm(r.category)}</b> <span class="mut">· risk score ${r.risk_score}/100</span></p><p>${esc(r.summary)}</p>
+<p><b>Why:</b> <span class="mut">category terms: ${esc(r.evidence.category_terms.concat(r.evidence.category_rule_hits).join(', ')||'-')}; severity signals: ${esc(r.evidence.severity_signals.join(', ')||'-')}</span></p>
+<p><b>Patterns:</b> ${r.themes.map(t=>esc(t.label)).join(', ')||'none matched'}</p><b>Recommended actions</b><ul>${r.actions.map(a=>'<li>'+esc(a)+'</li>').join('')||'<li>Route to EHS reviewer</li>'}</ul>
+<b>Similar past incidents</b><ul>${r.similar_incidents.map(s=>`<li>${esc(s.incident_id)} (${s.similarity}): ${esc(s.narrative)}</li>`).join('')||'<li>None similar</li>'}</ul>`}
+async function run(){const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:$('t').value})});r.ok?show(await r.json()):$('res').textContent='Enter some text first.'}
+function ex(t){$('t').value=t;run()}
+async function up(i){const fd=new FormData();fd.append('file',i.files[0]);const r=await fetch('/api/upload',{method:'POST',body:fd});if(!r.ok){$('res').textContent='Upload failed: need a CSV with a narrative column.';return}dash((await r.json()).dashboard);$('res').innerHTML='<p class="mut">Dashboard below now shows your uploaded file.</p>'}
+async function init(){dash(await (await fetch('/api/dashboard')).json());const e=await (await fetch('/api/evaluation')).json();
+const row=(n,k)=>`<tr><td>${n}</td>${['majority','rules','ml','hybrid'].map(m=>`<td>${e[k][m].accuracy} / ${e[k][m].macro_f1}</td>`).join('')}</tr>`;
+$('ev').innerHTML=`<table><tr><th>Task (accuracy / macro-F1)</th><th>Majority</th><th>Rules</th><th>ML only</th><th>Hybrid (used)</th></tr>${row('Category','category')}${row('Severity','severity')}</table><p class="mut">${e.n_incidents} labelled incidents, ${esc(e.protocol)}. Gold check on the 6 bundled incidents: category ${e.gold_check_bundled_6.category_accuracy}, severity ${e.gold_check_bundled_6.severity_accuracy}. Small, partly synthetic data: treat as indicative, not production accuracy.</p>`}
+init();
+</script></body></html>

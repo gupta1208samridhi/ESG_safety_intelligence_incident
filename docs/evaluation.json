@@ -1,0 +1,89 @@
+{
+  "n_incidents": 54,
+  "protocol": "5-fold stratified CV on bundled + extended data; plus gold check (train on extended only, test on the 6 bundled incidents)",
+  "category": {
+    "majority": {
+      "accuracy": 0.315,
+      "macro_f1": 0.244
+    },
+    "rules": {
+      "accuracy": 0.981,
+      "macro_f1": 0.981
+    },
+    "ml": {
+      "accuracy": 0.611,
+      "macro_f1": 0.615
+    },
+    "hybrid": {
+      "accuracy": 0.963,
+      "macro_f1": 0.962
+    },
+    "labels": [
+      "safety",
+      "environment",
+      "esg_compliance"
+    ],
+    "confusion_matrix_hybrid": [
+      [
+        19,
+        0,
+        0
+      ],
+      [
+        0,
+        18,
+        0
+      ],
+      [
+        1,
+        1,
+        15
+      ]
+    ]
+  },
+  "severity": {
+    "majority": {
+      "accuracy": 0.352,
+      "macro_f1": 0.174
+    },
+    "rules": {
+      "accuracy": 0.556,
+      "macro_f1": 0.52
+    },
+    "ml": {
+      "accuracy": 0.259,
+      "macro_f1": 0.232
+    },
+    "hybrid": {
+      "accuracy": 0.556,
+      "macro_f1": 0.52
+    },
+    "labels": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "confusion_matrix_hybrid": [
+      [
+        18,
+        0,
+        0
+      ],
+      [
+        13,
+        4,
+        0
+      ],
+      [
+        3,
+        8,
+        8
+      ]
+    ]
+  },
+  "gold_check_bundled_6": {
+    "category_accuracy": 1.0,
+    "severity_accuracy": 0.5,
+    "n": 6
+  }
+}
