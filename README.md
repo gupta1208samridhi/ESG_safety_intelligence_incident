@@ -15,13 +15,12 @@ Greenko-style renewable-energy sites (solar blocks, wind gearboxes, substations,
 
 ## Run Locally
 
-```bash
 pip install -r requirements.txt
 uvicorn backend.app:app --reload        # open http://localhost:8000 (API docs: /docs)
 python -m backend.pipeline              # re-run evaluation, writes docs/evaluation.json
 
 
-## Deploy to Render (Recommended)
+## Deploy to Render
 1. Push your project folder to a GitHub repository (`git init && git add . && git commit -m "ESG dashboard"`, then push).
 2. Go to **Render**, click **New + > Web Service**, and connect your GitHub repository.
 3. Configure your service settings:
